@@ -1,0 +1,108 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import type { Product } from "@/lib/types";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import Recommendations from "./recommendations";
+
+interface ProductDetailModalProps {
+  product: Product;
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+  onOrderNow: (product: Product, size: string) => void;
+}
+
+export default function ProductDetailModal({
+  product,
+  isOpen,
+  onOpenChange,
+  onOrderNow,
+}: ProductDetailModalProps) {
+  const [selectedSize, setSelectedSize] = useState<string | undefined>();
+  const [error, setError] = useState<string | null>(null);
+
+  const handleOrderClick = () => {
+    if (!selectedSize) {
+      setError("Please select a size before ordering.");
+      return;
+    }
+    setError(null);
+    onOrderNow(product, selectedSize);
+  };
+
+  const handleSizeChange = (value: string) => {
+    setSelectedSize(value);
+    if(error) {
+        setError(null);
+    }
+  }
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-4xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="relative aspect-square md:aspect-auto rounded-lg overflow-hidden">
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              data-ai-hint={product.imageHint}
+            />
+          </div>
+          <div className="flex flex-col">
+            <DialogHeader>
+              <DialogTitle className="text-3xl font-bold">{product.name}</DialogTitle>
+              <DialogDescription className="text-base pt-2">{product.description}</DialogDescription>
+            </DialogHeader>
+
+            <div className="my-6">
+                <p className="text-3xl font-extrabold text-primary">${product.price.toFixed(2)}</p>
+            </div>
+            
+            <div className="space-y-4">
+              <Label className="text-lg font-medium">Select Size</Label>
+              <RadioGroup value={selectedSize} onValueChange={handleSizeChange} className="flex flex-wrap gap-4">
+                {product.sizes.map((size) => (
+                  <div key={size} className="flex items-center">
+                    <RadioGroupItem value={size} id={`size-${size}`} className="sr-only" />
+                    <Label
+                      htmlFor={`size-${size}`}
+                      className="cursor-pointer rounded-md border-2 border-muted bg-popover px-4 py-2 text-base font-medium hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:text-primary [&:has([data-state=checked])]:border-primary"
+                    >
+                      {size}
+                    </Label>
+                  </div>
+                ))}
+              </RadioGroup>
+              {error && <p id="selected-size-error" className="text-sm font-medium text-destructive pt-2">{error}</p>}
+            </div>
+
+            <Recommendations productDescription={product.description} />
+            
+            <DialogFooter className="mt-auto pt-6">
+              <Button
+                onClick={handleOrderClick}
+                className="w-full bg-green-600 text-white py-6 rounded-lg text-lg font-semibold shadow-md hover:bg-green-700 transition duration-150"
+              >
+                Order Now
+              </Button>
+            </DialogFooter>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

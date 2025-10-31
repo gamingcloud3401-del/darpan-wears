@@ -1,3 +1,9 @@
+import ShopPage from "@/components/shop/shop-page";
+
 export default function Home() {
-  return <></>;
+  return (
+    <main>
+      <ShopPage />
+    </main>
+  );
 }
