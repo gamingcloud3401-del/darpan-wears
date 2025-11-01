@@ -75,10 +75,17 @@ export default function AdminView({ products, loading, onLogout }: AdminViewProp
                 ))
               ) : products.map((product) => (
                 <div key={product.id} className="flex items-center space-x-4 p-2 rounded-md hover:bg-muted/50">
-                  <Image src={product.imageUrl} alt={product.name} width={64} height={64} className="rounded-md object-cover aspect-square" data-ai-hint={product.imageHint} />
+                  <Image src={product.imageUrl} alt={product.name} width={64} height={64} className="rounded-md object-cover aspect-square" />
                   <div className="flex-1">
                     <p className="font-medium">{product.name}</p>
-                    <p className="text-sm text-muted-foreground">₹{product.price.toFixed(2)}</p>
+                     {product.offerPrice ? (
+                      <p className="text-sm">
+                        <span className="text-destructive font-semibold">₹{product.offerPrice.toFixed(2)}</span>
+                        <span className="text-muted-foreground line-through ml-2">₹{product.price.toFixed(2)}</span>
+                      </p>
+                    ) : (
+                      <p className="text-sm text-muted-foreground">₹{product.price.toFixed(2)}</p>
+                    )}
                   </div>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>

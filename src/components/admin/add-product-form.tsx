@@ -18,8 +18,8 @@ const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   description: z.string().min(10, "Description must be at least 10 characters."),
   price: z.coerce.number().positive("Price must be a positive number."),
+  offerPrice: z.coerce.number().optional(),
   imageUrl: z.string().url("Must be a valid URL."),
-  imageHint: z.string().min(2, "Image hint must be at least 2 characters."),
   category: z.string().min(2, "Category must be at least 2 characters."),
   sizes: z.string().min(1, "At least one size is required.").transform(val => val.split(',').map(s => s.trim())),
 });
@@ -33,8 +33,8 @@ export default function AddProductForm() {
       name: "",
       description: "",
       price: 0,
+      offerPrice: undefined,
       imageUrl: "https://picsum.photos/seed/new/600/400",
-      imageHint: "",
       category: "",
       sizes: "",
     },
@@ -82,6 +82,21 @@ export default function AddProductForm() {
                     <FormLabel>Price</FormLabel>
                     <FormControl>
                       <Input type="number" step="0.01" placeholder="e.g. 120.00" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                control={form.control}
+                name="offerPrice"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Offer Price (Optional)</FormLabel>
+                    <FormControl>
+                      <Input type="number" step="0.01" placeholder="e.g. 99.99" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -138,19 +153,6 @@ export default function AddProductForm() {
                     <FormLabel>Image URL</FormLabel>
                     <FormControl>
                       <Input placeholder="https://..." {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-               <FormField
-                control={form.control}
-                name="imageHint"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Image Hint (for AI)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g. running shoes" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

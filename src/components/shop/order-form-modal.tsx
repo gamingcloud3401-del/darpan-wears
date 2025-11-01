@@ -28,6 +28,7 @@ export default function OrderFormModal({ product, size, isOpen, onOpenChange }: 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
   const [paymentMethod, setPaymentMethod] = useState("cod");
+  const price = product.offerPrice || product.price;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,7 +38,7 @@ export default function OrderFormModal({ product, size, isOpen, onOpenChange }: 
     const address = formData.get("address") as string;
     const payment = paymentMethod === "cod" ? "Cash on Delivery" : "Online Payment";
 
-    const message = `New Order Details:\n\nProduct: ${product.name}\nSize: ${size}\nPrice: ₹${product.price.toFixed(2)}\n\nCustomer Info:\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\nPayment Method: ${payment}`;
+    const message = `New Order Details:\n\nProduct: ${product.name}\nSize: ${size}\nPrice: ₹${price.toFixed(2)}\n\nCustomer Info:\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\nPayment Method: ${payment}`;
     
     const whatsappUrl = `https://wa.me/9332307996?text=${encodeURIComponent(message)}`;
     

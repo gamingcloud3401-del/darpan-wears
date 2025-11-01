@@ -65,7 +65,6 @@ export default function ProductDetailModal({
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              data-ai-hint={product.imageHint}
             />
           </div>
           <div className="flex flex-col">
@@ -75,7 +74,14 @@ export default function ProductDetailModal({
             </DialogHeader>
 
             <div className="my-6">
-                <p className="text-3xl font-extrabold text-primary">₹{product.price.toFixed(2)}</p>
+               {product.offerPrice ? (
+                <div className="flex items-baseline gap-3">
+                    <p className="text-3xl font-extrabold text-primary">₹{product.offerPrice.toFixed(2)}</p>
+                    <p className="text-xl font-medium text-muted-foreground line-through">₹{product.price.toFixed(2)}</p>
+                </div>
+                ) : (
+                    <p className="text-3xl font-extrabold text-primary">₹{product.price.toFixed(2)}</p>
+                )}
             </div>
             
             <div className="space-y-4">

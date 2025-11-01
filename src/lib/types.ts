@@ -3,8 +3,8 @@ export type Product = {
   name: string;
   description: string;
   price: number;
+  offerPrice?: number;
   imageUrl: string;
-  imageHint: string;
   category: string;
   sizes: string[];
 };

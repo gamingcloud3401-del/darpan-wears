@@ -30,7 +30,6 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            data-ai-hint={product.imageHint}
           />
         </div>
       </CardHeader>
@@ -39,9 +38,20 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
         <Badge variant="secondary">{product.category}</Badge>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <p className="text-xl font-bold text-primary">
-          ₹{product.price.toFixed(2)}
-        </p>
+        {product.offerPrice ? (
+          <div className="flex items-baseline gap-2">
+            <p className="text-xl font-bold text-primary">
+              ₹{product.offerPrice.toFixed(2)}
+            </p>
+            <p className="text-sm font-medium text-muted-foreground line-through">
+              ₹{product.price.toFixed(2)}
+            </p>
+          </div>
+        ) : (
+          <p className="text-xl font-bold text-primary">
+            ₹{product.price.toFixed(2)}
+          </p>
+        )}
       </CardFooter>
     </Card>
   );
