@@ -37,55 +37,57 @@ interface HeaderProps {
 export default function Header({ searchTerm, onSearchTermChange, onAdminClick, settings }: HeaderProps) {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-card shadow-sm">
-      <div className="container mx-auto flex h-16 items-center space-x-2 sm:space-x-4 px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center space-x-2">
-          {settings?.logoUrl ? (
-            <Image src={settings.logoUrl} alt="Darpan Wears Logo" width={40} height={40} className="rounded-md" />
-          ) : (
-            <ShoppingCart className="h-7 w-7 text-primary" />
-          )}
-          <h1 className="text-lg sm:text-xl font-bold text-primary tracking-tight">Darpan Wears</h1>
+      <div className="container mx-auto flex flex-col px-4 sm:px-6 lg:px-8 py-2">
+        <div className="flex justify-between items-center w-full">
+          <div className="flex items-center space-x-2">
+            {settings?.logoUrl ? (
+              <Image src={settings.logoUrl} alt="Darpan Wears Logo" width={40} height={40} className="rounded-md" />
+            ) : (
+              <ShoppingCart className="h-7 w-7 text-primary" />
+            )}
+            <h1 className="text-lg sm:text-xl font-bold text-primary tracking-tight">Darpan Wears</h1>
+          </div>
+          
+          <div className="flex items-center space-x-0 sm:space-x-1">
+            {settings?.instagram && (
+              <Button variant="ghost" size="icon" asChild>
+                <Link href={settings.instagram} target="_blank" rel="noopener noreferrer">
+                  <Instagram className="h-5 w-5" />
+                </Link>
+              </Button>
+            )}
+            {settings?.youtube && (
+              <Button variant="ghost" size="icon" asChild>
+                <Link href={settings.youtube} target="_blank" rel="noopener noreferrer">
+                  <Youtube className="h-5 w-5" />
+                </Link>
+              </Button>
+            )}
+            {settings?.whatsapp && (
+              <Button variant="ghost" size="icon" asChild>
+                <Link href={settings.whatsapp} target="_blank" rel="noopener noreferrer">
+                  <WhatsAppIcon className="h-5 w-5" />
+                </Link>
+              </Button>
+            )}
+            <Button variant="ghost" onClick={onAdminClick} className="px-2 sm:px-4">
+              <UserCog className="h-5 w-5 sm:mr-2" />
+              <span className="hidden sm:inline">Admin</span>
+            </Button>
+          </div>
         </div>
-        
-        <div className="flex-1 flex justify-center px-0 sm:px-4 lg:px-16">
-          <div className="relative w-full max-w-md">
+
+        <div className="w-full pt-2">
+          <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search..."
+              placeholder="Search products..."
               className="w-full pl-10"
               value={searchTerm}
               onChange={(e) => onSearchTermChange(e.target.value)}
             />
           </div>
-        </div>
-
-        <div className="flex items-center space-x-0 sm:space-x-1">
-           {settings?.instagram && (
-            <Button variant="ghost" size="icon" asChild>
-              <Link href={settings.instagram} target="_blank" rel="noopener noreferrer">
-                <Instagram className="h-5 w-5" />
-              </Link>
-            </Button>
-          )}
-          {settings?.youtube && (
-            <Button variant="ghost" size="icon" asChild>
-              <Link href={settings.youtube} target="_blank" rel="noopener noreferrer">
-                <Youtube className="h-5 w-5" />
-              </Link>
-            </Button>
-          )}
-          {settings?.whatsapp && (
-             <Button variant="ghost" size="icon" asChild>
-              <Link href={settings.whatsapp} target="_blank" rel="noopener noreferrer">
-                <WhatsAppIcon className="h-5 w-5" />
-              </Link>
-            </Button>
-          )}
-           <Button variant="ghost" onClick={onAdminClick} className="px-2 sm:px-4">
-            <UserCog className="h-5 w-5 sm:mr-2" />
-            <span className="hidden sm:inline">Admin</span>
-          </Button>
         </div>
       </div>
     </header>
