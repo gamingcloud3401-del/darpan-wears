@@ -59,6 +59,7 @@ export default function AdminView({ products, settings, loading, onLogout }: Adm
   };
 
   const filteredProducts = useMemo(() => {
+    if (!searchTerm) return products;
     return products.filter(product => 
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.id.toLowerCase().includes(searchTerm.toLowerCase())
@@ -90,6 +91,7 @@ export default function AdminView({ products, settings, loading, onLogout }: Adm
               className="w-full pl-10"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              disabled={loading}
             />
           </div>
         </CardHeader>
@@ -110,9 +112,9 @@ export default function AdminView({ products, settings, loading, onLogout }: Adm
               ) : filteredProducts.map((product) => (
                 <div key={product.id} className="flex items-center space-x-4 p-2 rounded-md hover:bg-muted/50">
                   <Image src={product.imageUrls[0]} alt={product.name} width={64} height={64} className="rounded-md object-cover aspect-square" />
-                  <div className="flex-1">
-                    <p className="font-medium">{product.name}</p>
-                    <p className="text-xs text-muted-foreground">ID: {product.id}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium truncate">{product.name}</p>
+                    <p className="text-xs text-muted-foreground truncate">ID: {product.id}</p>
                      {product.offerPrice ? (
                       <p className="text-sm">
                         <span className="text-destructive font-semibold">₹{product.offerPrice.toFixed(2)}</span>

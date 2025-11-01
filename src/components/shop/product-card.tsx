@@ -23,13 +23,13 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
       onClick={onClick}
     >
       <CardHeader className="p-0">
-        <div className="relative aspect-[4/5]">
+        <div className="relative aspect-[1/1.25]">
           <Image
             src={product.imageUrls[0]}
             alt={product.name}
             fill
             className="object-cover"
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 22vw"
           />
         </div>
       </CardHeader>
