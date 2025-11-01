@@ -8,7 +8,6 @@ import { useToast } from "@/hooks/use-toast";
 import { removeProductAction } from "@/app/actions";
 import AddProductForm from "./add-product-form";
 import EditProductForm from "./edit-product-form";
-import SettingsForm from "./settings-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import Image from "next/image";
@@ -76,7 +75,6 @@ export default function AdminView({ products, settings, loading, onLogout }: Adm
         </Button>
       </div>
       
-      <SettingsForm settings={settings} />
       <AddProductForm />
 
       <Card>
