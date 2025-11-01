@@ -11,7 +11,7 @@ interface AdminLoginProps {
   onLoginSuccess: () => void;
 }
 
-const ADMIN_PASSWORD = "password123";
+const ADMIN_PASSWORD = "darpan2025";
 
 export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
   const [password, setPassword] = useState("");
