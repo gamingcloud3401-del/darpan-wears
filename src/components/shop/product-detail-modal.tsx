@@ -29,7 +29,7 @@ export default function ProductDetailModal({
   onOpenChange,
   onOrderNow,
 }: ProductDetailModalProps) {
-  const [selectedSize, setSelectedSize] = useState<string | undefined>();
+  const [selectedSize, setSelectedSize] = useState<string | undefined>(product.sizes.length === 1 ? product.sizes[0] : undefined);
   const [error, setError] = useState<string | null>(null);
 
   const handleOrderClick = () => {
@@ -49,7 +49,13 @@ export default function ProductDetailModal({
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={(open) => {
+        onOpenChange(open);
+        if(!open) {
+            setError(null);
+            setSelectedSize(product.sizes.length === 1 ? product.sizes[0] : undefined);
+        }
+    }}>
       <DialogContent className="sm:max-w-4xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="relative aspect-square md:aspect-auto rounded-lg overflow-hidden">
@@ -69,7 +75,7 @@ export default function ProductDetailModal({
             </DialogHeader>
 
             <div className="my-6">
-                <p className="text-3xl font-extrabold text-primary">${product.price.toFixed(2)}</p>
+                <p className="text-3xl font-extrabold text-primary">₹{product.price.toFixed(2)}</p>
             </div>
             
             <div className="space-y-4">
@@ -95,7 +101,7 @@ export default function ProductDetailModal({
             <DialogFooter className="mt-auto pt-6">
               <Button
                 onClick={handleOrderClick}
-                className="w-full bg-green-600 text-white py-6 rounded-lg text-lg font-semibold shadow-md hover:bg-green-700 transition duration-150"
+                className="w-full bg-primary text-primary-foreground py-6 rounded-lg text-lg font-semibold shadow-md hover:bg-primary/90 transition duration-150"
               >
                 Order Now
               </Button>

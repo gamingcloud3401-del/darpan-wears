@@ -78,7 +78,7 @@ export default function AdminView({ products, loading, onLogout }: AdminViewProp
                   <Image src={product.imageUrl} alt={product.name} width={64} height={64} className="rounded-md object-cover aspect-square" data-ai-hint={product.imageHint} />
                   <div className="flex-1">
                     <p className="font-medium">{product.name}</p>
-                    <p className="text-sm text-muted-foreground">${product.price.toFixed(2)}</p>
+                    <p className="text-sm text-muted-foreground">₹{product.price.toFixed(2)}</p>
                   </div>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>

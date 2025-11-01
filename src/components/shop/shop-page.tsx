@@ -15,6 +15,7 @@ export default function ShopPage() {
   const { products, loading } = useProducts();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string>("");
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
@@ -45,6 +46,7 @@ export default function ShopPage() {
 
   const handleOrderNow = (product: Product, size: string) => {
     setSelectedProduct(product);
+    setSelectedSize(size);
     setIsDetailModalOpen(false);
     setIsOrderModalOpen(true);
   };
@@ -73,9 +75,10 @@ export default function ShopPage() {
         />
       )}
 
-      {selectedProduct && (
+      {selectedProduct && selectedSize && (
         <OrderFormModal
             product={selectedProduct}
+            size={selectedSize}
             isOpen={isOrderModalOpen}
             onOpenChange={setIsOrderModalOpen}
         />

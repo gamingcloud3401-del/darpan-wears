@@ -40,7 +40,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <p className="text-xl font-bold text-primary">
-          ${product.price.toFixed(2)}
+          ₹{product.price.toFixed(2)}
         </p>
       </CardFooter>
     </Card>
