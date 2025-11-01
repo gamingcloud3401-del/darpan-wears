@@ -19,6 +19,7 @@ const formSchema = z.object({
   youtube: z.string().url("Must be a valid URL.").or(z.literal('')),
   whatsapp: z.string().url("Must be a valid URL.").or(z.literal('')),
   promoVideoUrl: z.string().url("Must be a valid URL.").or(z.literal('')),
+  logoUrl: z.string().url("Must be a valid URL.").or(z.literal('')),
 });
 
 interface SettingsFormProps {
@@ -35,6 +36,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
       youtube: settings?.youtube || "",
       whatsapp: settings?.whatsapp || "",
       promoVideoUrl: settings?.promoVideoUrl || "",
+      logoUrl: settings?.logoUrl || "",
     },
   });
 
@@ -53,11 +55,24 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
     <Card>
       <CardHeader>
         <CardTitle>Site Settings</CardTitle>
-        <CardDescription>Manage your social media links and promotional video.</CardDescription>
+        <CardDescription>Manage your social media links, logo, and promotional video.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="logoUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Logo URL</FormLabel>
+                  <FormControl>
+                    <Input placeholder="https://example.com/logo.png" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="instagram"

@@ -17,4 +17,5 @@ export type Settings = {
   youtube: string;
   whatsapp: string;
   promoVideoUrl?: string;
+  logoUrl?: string;
 };

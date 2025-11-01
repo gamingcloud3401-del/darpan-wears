@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Settings } from '@/lib/types';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // Inline SVG for WhatsApp as it's not in lucide-react
 const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -37,7 +38,11 @@ export default function Header({ searchTerm, onSearchTermChange, onAdminClick, s
     <header className="sticky top-0 z-40 w-full border-b bg-card shadow-sm">
       <div className="container mx-auto flex h-16 items-center space-x-4 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center space-x-2">
-          <ShoppingCart className="h-7 w-7 text-primary" />
+          {settings?.logoUrl ? (
+            <Image src={settings.logoUrl} alt="Darpan Wears Logo" width={40} height={40} className="rounded-md" />
+          ) : (
+            <ShoppingCart className="h-7 w-7 text-primary" />
+          )}
           <h1 className="text-xl font-bold text-primary tracking-tight">Darpan Wears</h1>
         </div>
         
