@@ -23,7 +23,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
       onClick={onClick}
     >
       <CardHeader className="p-0">
-        <div className="relative aspect-video">
+        <div className="relative aspect-square">
           <Image
             src={product.imageUrl}
             alt={product.name}
