@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import { useProducts } from "@/hooks/use-products";
 import { useSettings } from "@/hooks/use-settings";
 import { seedProducts } from "@/lib/initial-products";
@@ -14,7 +14,7 @@ import AdminPanel from "../admin/admin-panel";
 import VideoPlayerModal from "./video-player-modal";
 
 export default function ShopPage() {
-  const { products, loading: productsLoading } = useProducts();
+  const { products, loading: productsLoading, loadMore, loadingMore, hasMore } = useProducts();
   const { settings, loading: settingsLoading } = useSettings();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -44,6 +44,7 @@ export default function ShopPage() {
   }, [settings]);
 
   const filteredProducts = useMemo(() => {
+    if (!searchTerm) return products;
     return products.filter((product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.category.toLowerCase().includes(searchTerm.toLowerCase())
@@ -75,6 +76,10 @@ export default function ShopPage() {
           products={filteredProducts}
           loading={productsLoading}
           onProductClick={handleProductClick}
+          loadMore={loadMore}
+          hasMore={hasMore}
+          loadingMore={loadingMore}
+          isSearching={!!searchTerm}
         />
       </main>
 
