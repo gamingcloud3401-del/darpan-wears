@@ -1,18 +1,19 @@
 "use client";
 
-import { useTransition, useState } from "react";
+import { useTransition, useState, useMemo } from "react";
 import type { Product, Settings } from "@/lib/types";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { removeProductAction } from "@/app/actions";
 import AddProductForm from "./add-product-form";
 import EditProductForm from "./edit-product-form";
 import SettingsForm from "./settings-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import Image from "next/image";
 import { Skeleton } from "../ui/skeleton";
-import { LogOut, Trash2, Loader2, Pencil } from "lucide-react";
+import { LogOut, Trash2, Loader2, Pencil, Search } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,6 +36,7 @@ interface AdminViewProps {
 export default function AdminView({ products, settings, loading, onLogout }: AdminViewProps) {
   const [isPending, startTransition] = useTransition();
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
 
   const handleRemoveProduct = (productId: string) => {
@@ -56,6 +58,13 @@ export default function AdminView({ products, settings, loading, onLogout }: Adm
     setEditingProduct(null);
   };
 
+  const filteredProducts = useMemo(() => {
+    return products.filter(product => 
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.id.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [products, searchTerm]);
+
 
   return (
     <div className="space-y-8">
@@ -72,6 +81,17 @@ export default function AdminView({ products, settings, loading, onLogout }: Adm
       <Card>
         <CardHeader>
           <CardTitle>Existing Products</CardTitle>
+          <CardDescription>Search, view, edit, or delete existing products.</CardDescription>
+          <div className="relative pt-2">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search by name or product ID..."
+              className="w-full pl-10"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-[400px]">
@@ -87,7 +107,7 @@ export default function AdminView({ products, settings, loading, onLogout }: Adm
                     <Skeleton className="h-10 w-20 rounded-md" />
                   </div>
                 ))
-              ) : products.map((product) => (
+              ) : filteredProducts.map((product) => (
                 <div key={product.id} className="flex items-center space-x-4 p-2 rounded-md hover:bg-muted/50">
                   <Image src={product.imageUrls[0]} alt={product.name} width={64} height={64} className="rounded-md object-cover aspect-square" />
                   <div className="flex-1">

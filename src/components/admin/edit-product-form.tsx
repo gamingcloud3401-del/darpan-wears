@@ -22,6 +22,7 @@ const formSchema = z.object({
   offerPrice: z.coerce.number().optional(),
   imageUrls: z.string().min(1, "At least one image URL is required.").transform(val => val.split(',').map(s => s.trim())),
   videoUrl: z.string().url("Must be a valid URL.").or(z.literal('')),
+  productLink: z.string().url("Must be a valid URL.").or(z.literal('')),
   category: z.string().min(2, "Category must be at least 2 characters."),
   sizes: z.string().min(1, "At least one size is required.").transform(val => val.split(',').map(s => s.trim())),
 });
@@ -45,6 +46,7 @@ export default function EditProductForm({ product, isOpen, onOpenChange }: EditP
       offerPrice: product.offerPrice,
       imageUrls: product.imageUrls.join(', '),
       videoUrl: product.videoUrl || "",
+      productLink: product.productLink || "",
       category: product.category,
       sizes: product.sizes.join(', '),
     },
@@ -179,6 +181,19 @@ export default function EditProductForm({ product, isOpen, onOpenChange }: EditP
                     <FormLabel>Product Video URL (Optional)</FormLabel>
                     <FormControl>
                       <Input placeholder="https://youtube.com/watch?v=..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+               <FormField
+                control={form.control}
+                name="productLink"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Product Link (Optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://example.com/product/..." {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

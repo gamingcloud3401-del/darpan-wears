@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import type { Product } from "@/lib/types";
 import {
   Dialog,
@@ -22,7 +23,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Recommendations from "./recommendations";
-import { Video } from "lucide-react";
+import { Video, ExternalLink } from "lucide-react";
 import VideoPlayerModal from "./video-player-modal";
 
 interface ProductDetailModalProps {
@@ -127,13 +128,22 @@ export default function ProductDetailModal({
                 </RadioGroup>
                 {error && <p id="selected-size-error" className="text-sm font-medium text-destructive pt-2">{error}</p>}
               </div>
-
-              {product.videoUrl && (
-                  <Button variant="outline" className="mt-4" onClick={() => setIsProductVideoOpen(true)}>
-                      <Video className="mr-2 h-4 w-4" />
-                      Watch Product Video
+              <div className="flex gap-2">
+                {product.videoUrl && (
+                    <Button variant="outline" className="mt-4" onClick={() => setIsProductVideoOpen(true)}>
+                        <Video className="mr-2 h-4 w-4" />
+                        Watch Product Video
+                    </Button>
+                )}
+                {product.productLink && (
+                  <Button variant="outline" className="mt-4" asChild>
+                    <Link href={product.productLink} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="mr-2 h-4 w-4" />
+                      View Product
+                    </Link>
                   </Button>
-              )}
+                )}
+              </div>
 
               <Recommendations productDescription={product.description} />
               

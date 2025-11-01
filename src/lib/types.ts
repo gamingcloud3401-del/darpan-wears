@@ -6,6 +6,7 @@ export type Product = {
   offerPrice?: number;
   imageUrls: string[];
   videoUrl?: string;
+  productLink?: string;
   category: string;
   sizes: string[];
 };
