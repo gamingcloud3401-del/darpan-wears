@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -23,7 +24,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Recommendations from "./recommendations";
-import { Video, ExternalLink } from "lucide-react";
+import { Video } from "lucide-react";
 import VideoPlayerModal from "./video-player-modal";
 
 interface ProductDetailModalProps {
@@ -134,14 +135,6 @@ export default function ProductDetailModal({
                         <Video className="mr-2 h-4 w-4" />
                         Watch Product Video
                     </Button>
-                )}
-                {product.productLink && (
-                  <Button variant="outline" className="mt-4" asChild>
-                    <Link href={product.productLink} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      View Product
-                    </Link>
-                  </Button>
                 )}
               </div>
 
