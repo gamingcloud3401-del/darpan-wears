@@ -32,9 +32,10 @@ interface AdminViewProps {
   loading: boolean;
   onLogout: () => void;
   addOptimisticProduct: (product: Omit<Product, "id" | "createdAt">) => void;
+  onProductAdded: () => void;
 }
 
-export default function AdminView({ products, settings, loading, onLogout, addOptimisticProduct }: AdminViewProps) {
+export default function AdminView({ products, settings, loading, onLogout, addOptimisticProduct, onProductAdded }: AdminViewProps) {
   const [isPending, startTransition] = useTransition();
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -77,7 +78,7 @@ export default function AdminView({ products, settings, loading, onLogout, addOp
         </Button>
       </div>
       
-      <AddProductForm onAddProduct={addOptimisticProduct} />
+      <AddProductForm onAddProduct={addOptimisticProduct} onProductAdded={onProductAdded} />
 
       <Card>
         <CardHeader>

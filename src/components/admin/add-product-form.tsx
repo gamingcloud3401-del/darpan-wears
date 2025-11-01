@@ -31,9 +31,10 @@ type FormValues = Omit<z.infer<typeof formSchema>, 'sizes' | 'imageUrls'> & { si
 
 interface AddProductFormProps {
   onAddProduct: (product: Omit<Product, 'id' | 'createdAt'>) => void;
+  onProductAdded: () => void;
 }
 
-export default function AddProductForm({ onAddProduct }: AddProductFormProps) {
+export default function AddProductForm({ onAddProduct, onProductAdded }: AddProductFormProps) {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -59,6 +60,7 @@ export default function AddProductForm({ onAddProduct }: AddProductFormProps) {
       const result = await addProductAction(values);
       if (result.success) {
         toast({ title: "Success", description: result.message });
+        onProductAdded();
       } else {
         toast({ title: "Error", description: result.message, variant: "destructive" });
       }

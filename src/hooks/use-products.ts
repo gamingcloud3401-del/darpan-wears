@@ -16,12 +16,14 @@ export function useProducts() {
   const [lastDoc, setLastDoc] = useState<DocumentData | null>(null);
 
   const addOptimisticProduct = useCallback((product: Omit<Product, "id" | "createdAt">) => {
-    const optimisticProduct: Product = {
-      id: `optimistic-${Date.now()}`,
-      ...product,
-      createdAt: new Date(),
-    };
-    setProducts(prev => [optimisticProduct, ...prev]);
+    if (typeof window !== "undefined") {
+      const optimisticProduct: Product = {
+        id: `optimistic-${Date.now()}`,
+        ...product,
+        createdAt: new Date(),
+      };
+      setProducts(prev => [optimisticProduct, ...prev]);
+    }
   }, []);
 
   const fetchInitialProducts = useCallback(() => {
@@ -97,5 +99,9 @@ export function useProducts() {
   }, [lastDoc, hasMore, loadingMore]);
 
 
-  return { products, loading, loadMore, loadingMore, hasMore, addOptimisticProduct };
+  const refreshProducts = useCallback(() => {
+    fetchInitialProducts();
+  }, [fetchInitialProducts]);
+
+  return { products, loading, loadMore, loadingMore, hasMore, addOptimisticProduct, refreshProducts };
 }
