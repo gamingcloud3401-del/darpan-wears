@@ -15,9 +15,10 @@ interface AdminPanelProps {
   loading: boolean;
   addOptimisticProduct: (product: Omit<Product, "id" | "createdAt">) => void;
   onProductAdded: () => void;
+  removeOptimisticProduct: (productId: string) => void;
 }
 
-export default function AdminPanel({ isOpen, onOpenChange, products, settings, loading, addOptimisticProduct, onProductAdded }: AdminPanelProps) {
+export default function AdminPanel({ isOpen, onOpenChange, products, settings, loading, addOptimisticProduct, onProductAdded, removeOptimisticProduct }: AdminPanelProps) {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -59,6 +60,7 @@ export default function AdminPanel({ isOpen, onOpenChange, products, settings, l
               onLogout={handleLogout}
               addOptimisticProduct={addOptimisticProduct}
               onProductAdded={onProductAdded}
+              removeOptimisticProduct={removeOptimisticProduct}
             />
           ) : (
             <AdminLogin onLoginSuccess={handleLoginSuccess} />

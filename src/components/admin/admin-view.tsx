@@ -33,15 +33,17 @@ interface AdminViewProps {
   onLogout: () => void;
   addOptimisticProduct: (product: Omit<Product, "id" | "createdAt">) => void;
   onProductAdded: () => void;
+  removeOptimisticProduct: (productId: string) => void;
 }
 
-export default function AdminView({ products, settings, loading, onLogout, addOptimisticProduct, onProductAdded }: AdminViewProps) {
+export default function AdminView({ products, settings, loading, onLogout, addOptimisticProduct, onProductAdded, removeOptimisticProduct }: AdminViewProps) {
   const [isPending, startTransition] = useTransition();
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
 
   const handleRemoveProduct = (productId: string) => {
+    removeOptimisticProduct(productId);
     startTransition(async () => {
       const result = await removeProductAction(productId);
       if (result.success) {

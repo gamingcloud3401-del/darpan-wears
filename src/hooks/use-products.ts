@@ -25,6 +25,12 @@ export function useProducts() {
       setProducts(prev => [optimisticProduct, ...prev]);
     }
   }, []);
+  
+  const removeOptimisticProduct = useCallback((productId: string) => {
+    if (typeof window !== "undefined") {
+      setProducts(prev => prev.filter(p => p.id !== productId));
+    }
+  }, []);
 
   const fetchInitialProducts = useCallback(() => {
     setLoading(true);
@@ -103,5 +109,5 @@ export function useProducts() {
     fetchInitialProducts();
   }, [fetchInitialProducts]);
 
-  return { products, loading, loadMore, loadingMore, hasMore, addOptimisticProduct, refreshProducts };
+  return { products, loading, loadMore, loadingMore, hasMore, addOptimisticProduct, refreshProducts, removeOptimisticProduct };
 }
