@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useState, useMemo, useEffect, useCallback, useRef } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useProducts } from "@/hooks/use-products";
 import { useSettings } from "@/hooks/use-settings";
 import { seedProducts } from "@/lib/initial-products";
@@ -12,6 +13,7 @@ import ProductDetailModal from "./product-detail-modal";
 import OrderFormModal from "./order-form-modal";
 import AdminPanel from "../admin/admin-panel";
 import VideoPlayerModal from "./video-player-modal";
+import WelcomeLoader from "./welcome-loader";
 
 export default function ShopPage() {
   const { products, loading: productsLoading, loadMore, loadingMore, hasMore } = useProducts();
@@ -23,6 +25,8 @@ export default function ShopPage() {
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
   const [isPromoVideoOpen, setIsPromoVideoOpen] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
+
 
   useEffect(() => {
     const doSeed = async () => {
@@ -42,6 +46,15 @@ export default function ShopPage() {
         sessionStorage.setItem("promoVideoShown", "true");
     }
   }, [settings]);
+  
+  useEffect(() => {
+    if (!productsLoading) {
+      const timer = setTimeout(() => setShowWelcome(false), 500); // slight delay for fade-out
+      return () => clearTimeout(timer);
+    } else {
+      setShowWelcome(true);
+    }
+  }, [productsLoading]);
 
   const filteredProducts = useMemo(() => {
     if (!searchTerm) return products;
@@ -65,6 +78,7 @@ export default function ShopPage() {
   
   return (
     <div className="flex flex-col min-h-screen">
+      <WelcomeLoader logoUrl={settings?.logoUrl} show={showWelcome} />
       <Header 
         searchTerm={searchTerm} 
         onSearchTermChange={setSearchTerm} 
@@ -74,7 +88,7 @@ export default function ShopPage() {
       <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <ProductList
           products={filteredProducts}
-          loading={productsLoading}
+          loading={productsLoading && showWelcome}
           onProductClick={handleProductClick}
           loadMore={loadMore}
           hasMore={hasMore}

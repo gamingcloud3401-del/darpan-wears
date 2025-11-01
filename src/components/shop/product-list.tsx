@@ -1,3 +1,4 @@
+
 "use client";
 
 import type { Product } from "@/lib/types";
@@ -5,7 +6,7 @@ import ProductCard from "./product-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Frown, Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
-import { useRef, useCallback, useEffect } from "react";
+import { useRef, useCallback } from "react";
 
 interface ProductListProps {
   products: Product[];
@@ -32,7 +33,7 @@ export default function ProductList({ products, loading, onProductClick, loadMor
 
   if (loading) {
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 opacity-0">
         {Array.from({ length: 8 }).map((_, i) => (
           <div key={i} className="flex flex-col space-y-3">
             <Skeleton className="h-[200px] sm:h-[250px] w-full rounded-lg" />
