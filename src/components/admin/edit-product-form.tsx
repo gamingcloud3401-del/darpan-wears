@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -109,7 +110,7 @@ export default function EditProductForm({ product, isOpen, onOpenChange }: EditP
                     <FormItem>
                       <FormLabel>Offer Price (Optional)</FormLabel>
                       <FormControl>
-                        <Input type="number" step="0.01" placeholder="e.g. 99.99" {...field} />
+                        <Input type="number" step="0.01" placeholder="e.g. 99.99" {...field} value={field.value ?? ""} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -150,7 +151,7 @@ export default function EditProductForm({ product, isOpen, onOpenChange }: EditP
                     <FormItem>
                       <FormLabel>Sizes (comma-separated)</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g. 8, 9, 10" {...field} value={Array.isArray(field.value) ? field.value.join(', ') : field.value} />
+                        <Input placeholder="e.g. 8, 9, 10" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -164,7 +165,7 @@ export default function EditProductForm({ product, isOpen, onOpenChange }: EditP
                   <FormItem>
                     <FormLabel>Image URLs</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="https://..." {...field} value={Array.isArray(field.value) ? field.value.join(', ') : field.value} />
+                      <Textarea placeholder="https://..." {...field} />
                     </FormControl>
                     <FormDescription>
                       Add multiple image URLs, separated by commas. The first one will be the main image.
