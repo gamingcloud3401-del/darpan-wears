@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
@@ -10,7 +11,36 @@ interface WelcomeLoaderProps {
   show: boolean;
 }
 
+const AnimatedBackground = () => {
+    return (
+        <div className="absolute inset-0 z-0 overflow-hidden">
+            <div className="absolute top-0 -left-4 w-72 h-72 bg-primary rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+            <div className="absolute top-0 -right-4 w-72 h-72 bg-accent rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+            <div className="absolute -bottom-8 left-20 w-72 h-72 bg-secondary rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        </div>
+    )
+}
+
 export default function WelcomeLoader({ logoUrl, show }: WelcomeLoaderProps) {
+    const [countdown, setCountdown] = useState(30);
+
+    useEffect(() => {
+        if (show) {
+            setCountdown(30);
+            const timer = setInterval(() => {
+                setCountdown((prev) => {
+                    if (prev === 1) {
+                        clearInterval(timer);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+
+            return () => clearInterval(timer);
+        }
+    }, [show]);
+
   return (
     <div
       className={cn(
@@ -18,7 +48,8 @@ export default function WelcomeLoader({ logoUrl, show }: WelcomeLoaderProps) {
         show ? "opacity-100" : "opacity-0 pointer-events-none"
       )}
     >
-      <div className="flex flex-col items-center gap-6">
+        <AnimatedBackground />
+      <div className="z-10 flex flex-col items-center gap-6">
         {logoUrl && (
             <Image
                 src={logoUrl}
@@ -35,6 +66,10 @@ export default function WelcomeLoader({ logoUrl, show }: WelcomeLoaderProps) {
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Loading our finest collection...
             </p>
+             <div className="mt-8">
+                <p className="text-lg font-semibold text-primary">{countdown}</p>
+                <p className="text-sm text-muted-foreground">Seconds remaining</p>
+            </div>
         </div>
       </div>
     </div>
