@@ -67,8 +67,14 @@ export default function WelcomeLoader({ logoUrl, show }: WelcomeLoaderProps) {
                 Loading our finest collection...
             </p>
              <div className="mt-8">
-                <p className="text-lg font-semibold text-primary">{countdown}</p>
-                <p className="text-sm text-muted-foreground">Seconds remaining</p>
+                {countdown > 0 ? (
+                  <>
+                    <p className="text-lg font-semibold text-primary">{countdown}</p>
+                    <p className="text-sm text-muted-foreground">Seconds remaining</p>
+                  </>
+                ) : (
+                  <p className="text-lg font-semibold text-primary animate-pulse">Almost done...</p>
+                )}
             </div>
         </div>
       </div>
