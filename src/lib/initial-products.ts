@@ -1,8 +1,8 @@
-import { collection, getDocs, writeBatch, doc } from "firebase/firestore";
+import { collection, getDocs, writeBatch, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "./firebase";
 import type { Product } from "./types";
 
-export const initialProductData: Omit<Product, 'id'>[] = [
+export const initialProductData: Omit<Product, 'id' | 'createdAt'>[] = [
   {
     name: "AeroRun Pro Sneakers",
     description: "Lightweight and responsive, these sneakers are designed for maximum speed and comfort during your runs. Featuring a breathable mesh upper and cushioned sole.",
@@ -65,7 +65,7 @@ export async function seedProducts() {
       const batch = writeBatch(db);
       initialProductData.forEach((product) => {
         const docRef = doc(productsCollectionRef);
-        batch.set(docRef, product);
+        batch.set(docRef, {...product, createdAt: serverTimestamp()});
       });
       await batch.commit();
       console.log("Seeding complete.");

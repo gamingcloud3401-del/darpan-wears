@@ -1,3 +1,5 @@
+import { FieldValue } from "firebase/firestore";
+
 export type Product = {
   id: string;
   name: string;
@@ -9,6 +11,7 @@ export type Product = {
   productLink?: string;
   category: string;
   sizes: string[];
+  createdAt: FieldValue | Date;
 };
 
 export type Settings = {

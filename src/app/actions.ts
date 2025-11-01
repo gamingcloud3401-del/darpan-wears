@@ -1,15 +1,16 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { addDoc, collection, deleteDoc, doc, setDoc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, setDoc, getDocs, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Product, Settings } from "@/lib/types";
 
-export async function addProductAction(productData: Omit<Product, "id">) {
+export async function addProductAction(productData: Omit<Product, "id" | "createdAt">) {
   try {
     const productToAdd = {
       ...productData,
       imageUrls: productData.imageUrls.filter(url => url.trim() !== ""),
+      createdAt: serverTimestamp(),
     };
     await addDoc(collection(db, "products"), productToAdd);
     revalidatePath("/");
