@@ -9,7 +9,7 @@ import { addProductAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
@@ -19,7 +19,7 @@ const formSchema = z.object({
   description: z.string().min(10, "Description must be at least 10 characters."),
   price: z.coerce.number().positive("Price must be a positive number."),
   offerPrice: z.coerce.number().optional(),
-  imageUrl: z.string().url("Must be a valid URL."),
+  imageUrls: z.string().min(1, "At least one image URL is required.").transform(val => val.split(',').map(s => s.trim())),
   category: z.string().min(2, "Category must be at least 2 characters."),
   sizes: z.string().min(1, "At least one size is required.").transform(val => val.split(',').map(s => s.trim())),
 });
@@ -34,13 +34,13 @@ export default function AddProductForm() {
       description: "",
       price: 0,
       offerPrice: undefined,
-      imageUrl: "https://picsum.photos/seed/new/600/400",
+      imageUrls: "https://picsum.photos/seed/new/600/400",
       category: "",
       sizes: "",
     },
   });
 
-  function onSubmit(values: Omit<z.infer<typeof formSchema>, 'sizes'> & { sizes: string[] }) {
+  function onSubmit(values: Omit<z.infer<typeof formSchema>, 'sizes' | 'imageUrls'> & { sizes: string[], imageUrls: string[] }) {
     startTransition(async () => {
       const result = await addProductAction(values);
       if (result.success) {
@@ -144,21 +144,22 @@ export default function AddProductForm() {
                 )}
               />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-               <FormField
-                control={form.control}
-                name="imageUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Image URL</FormLabel>
-                    <FormControl>
-                      <Input placeholder="https://..." {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="imageUrls"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image URLs</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="https://..." {...field} value={Array.isArray(field.value) ? field.value.join(', ') : field.value} />
+                  </FormControl>
+                  <FormDescription>
+                    Add multiple image URLs, separated by commas. The first one will be the main image.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <Button type="submit" disabled={isPending}>
               {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

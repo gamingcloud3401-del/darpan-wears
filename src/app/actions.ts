@@ -7,7 +7,11 @@ import { Product, SocialLinks } from "@/lib/types";
 
 export async function addProductAction(productData: Omit<Product, "id">) {
   try {
-    await addDoc(collection(db, "products"), productData);
+    const productToAdd = {
+      ...productData,
+      imageUrls: productData.imageUrls.filter(url => url.trim() !== ""),
+    };
+    await addDoc(collection(db, "products"), productToAdd);
     revalidatePath("/");
     return { success: true, message: "Product added successfully." };
   } catch (error) {

@@ -23,9 +23,9 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
       onClick={onClick}
     >
       <CardHeader className="p-0">
-        <div className="relative aspect-square">
+        <div className="relative aspect-[4/5]">
           <Image
-            src={product.imageUrl}
+            src={product.imageUrls[0]}
             alt={product.name}
             fill
             className="object-cover"

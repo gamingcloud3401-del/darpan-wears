@@ -78,7 +78,7 @@ export default function AdminView({ products, socialLinks, loading, onLogout }: 
                 ))
               ) : products.map((product) => (
                 <div key={product.id} className="flex items-center space-x-4 p-2 rounded-md hover:bg-muted/50">
-                  <Image src={product.imageUrl} alt={product.name} width={64} height={64} className="rounded-md object-cover aspect-square" />
+                  <Image src={product.imageUrls[0]} alt={product.name} width={64} height={64} className="rounded-md object-cover aspect-square" />
                   <div className="flex-1">
                     <p className="font-medium">{product.name}</p>
                      {product.offerPrice ? (

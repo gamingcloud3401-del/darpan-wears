@@ -11,6 +11,13 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -58,15 +65,29 @@ export default function ProductDetailModal({
     }}>
       <DialogContent className="sm:max-w-4xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="relative aspect-square md:aspect-auto rounded-lg overflow-hidden">
-            <Image
-              src={product.imageUrl}
-              alt={product.name}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-          </div>
+          <Carousel className="w-full">
+            <CarouselContent>
+              {product.imageUrls.map((url, index) => (
+                <CarouselItem key={index}>
+                  <div className="relative aspect-square md:aspect-auto rounded-lg overflow-hidden h-96">
+                    <Image
+                      src={url}
+                      alt={`${product.name} image ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {product.imageUrls.length > 1 && (
+              <>
+                <CarouselPrevious />
+                <CarouselNext />
+              </>
+            )}
+          </Carousel>
           <div className="flex flex-col">
             <DialogHeader>
               <DialogTitle className="text-3xl font-bold">{product.name}</DialogTitle>
