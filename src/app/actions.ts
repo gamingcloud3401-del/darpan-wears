@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { addDoc, collection, deleteDoc, doc, setDoc, getDocs, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { Product, Settings } from "@/lib/types";
+import { Product } from "@/lib/types";
 
 export async function addProductAction(productData: Omit<Product, "id" | "createdAt">) {
   try {
@@ -45,27 +45,5 @@ export async function removeProductAction(productId: string) {
   } catch (error) {
     console.error("Error removing product: ", error);
     return { success: false, message: "Failed to remove product." };
-  }
-}
-
-export async function updateSettingsAction(settings: Partial<Omit<Settings, "id">>) {
-  try {
-    const settingsCollection = collection(db, "settings");
-    const querySnapshot = await getDocs(settingsCollection);
-    let docId: string;
-
-    if (querySnapshot.empty) {
-      const newDocRef = doc(settingsCollection);
-      docId = newDocRef.id;
-    } else {
-      docId = querySnapshot.docs[0].id;
-    }
-
-    await setDoc(doc(db, "settings", docId), settings, { merge: true });
-    revalidatePath("/");
-    return { success: true, message: "Settings updated successfully." };
-  } catch (error) {
-    console.error("Error updating settings:", error);
-    return { success: false, message: "Failed to update settings." };
   }
 }
