@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useTransition } from "react";
-
 import { addProductAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDes
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import type { Product } from "@/lib/types";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -27,7 +27,13 @@ const formSchema = z.object({
   sizes: z.string().min(1, "At least one size is required.").transform(val => val.split(',').map(s => s.trim())),
 });
 
-export default function AddProductForm() {
+type FormValues = Omit<z.infer<typeof formSchema>, 'sizes' | 'imageUrls'> & { sizes: string[], imageUrls: string[] };
+
+interface AddProductFormProps {
+  onAddProduct: (product: Omit<Product, 'id' | 'createdAt'>) => void;
+}
+
+export default function AddProductForm({ onAddProduct }: AddProductFormProps) {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -45,12 +51,14 @@ export default function AddProductForm() {
     },
   });
 
-  function onSubmit(values: Omit<z.infer<typeof formSchema>, 'sizes' | 'imageUrls'> & { sizes: string[], imageUrls: string[] }) {
+  function onSubmit(values: FormValues) {
+    onAddProduct(values);
+    form.reset();
+
     startTransition(async () => {
       const result = await addProductAction(values);
       if (result.success) {
         toast({ title: "Success", description: result.message });
-        form.reset();
       } else {
         toast({ title: "Error", description: result.message, variant: "destructive" });
       }
@@ -172,7 +180,7 @@ export default function AddProductForm() {
                 <FormItem>
                   <FormLabel>Product Video URL (Optional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://youtube.com/watch?v=..." {...field} />
+                    <Input placeholder="https://youtube.com/watch?v=..." {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -185,7 +193,7 @@ export default function AddProductForm() {
                 <FormItem>
                   <FormLabel>Product Link (Optional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://example.com/product/..." {...field} />
+                    <Input placeholder="https://example.com/product/..." {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

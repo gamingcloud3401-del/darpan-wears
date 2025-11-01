@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -13,6 +14,15 @@ export function useProducts() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [lastDoc, setLastDoc] = useState<DocumentData | null>(null);
+
+  const addOptimisticProduct = (product: Omit<Product, "id" | "createdAt">) => {
+    const optimisticProduct: Product = {
+      id: `optimistic-${Date.now()}`,
+      ...product,
+      createdAt: new Date(),
+    };
+    setProducts(prev => [optimisticProduct, ...prev]);
+  };
 
   const fetchInitialProducts = useCallback(() => {
     setLoading(true);
@@ -87,5 +97,5 @@ export function useProducts() {
   }, [lastDoc, hasMore, loadingMore]);
 
 
-  return { products, loading, loadMore, loadingMore, hasMore };
+  return { products, loading, loadMore, loadingMore, hasMore, addOptimisticProduct };
 }

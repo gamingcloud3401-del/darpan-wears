@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -12,9 +13,10 @@ interface AdminPanelProps {
   products: Product[];
   settings?: Settings;
   loading: boolean;
+  addOptimisticProduct: (product: Omit<Product, "id" | "createdAt">) => void;
 }
 
-export default function AdminPanel({ isOpen, onOpenChange, products, settings, loading }: AdminPanelProps) {
+export default function AdminPanel({ isOpen, onOpenChange, products, settings, loading, addOptimisticProduct }: AdminPanelProps) {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -49,7 +51,13 @@ export default function AdminPanel({ isOpen, onOpenChange, products, settings, l
         </SheetHeader>
         <div className="py-6">
           {isAdminLoggedIn ? (
-            <AdminView products={products} settings={settings} loading={loading} onLogout={handleLogout} />
+            <AdminView 
+              products={products} 
+              settings={settings} 
+              loading={loading} 
+              onLogout={handleLogout}
+              addOptimisticProduct={addOptimisticProduct}
+            />
           ) : (
             <AdminLogin onLoginSuccess={handleLoginSuccess} />
           )}

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useTransition, useState, useMemo } from "react";
@@ -30,9 +31,10 @@ interface AdminViewProps {
   settings?: Settings;
   loading: boolean;
   onLogout: () => void;
+  addOptimisticProduct: (product: Omit<Product, "id" | "createdAt">) => void;
 }
 
-export default function AdminView({ products, settings, loading, onLogout }: AdminViewProps) {
+export default function AdminView({ products, settings, loading, onLogout, addOptimisticProduct }: AdminViewProps) {
   const [isPending, startTransition] = useTransition();
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -75,7 +77,7 @@ export default function AdminView({ products, settings, loading, onLogout }: Adm
         </Button>
       </div>
       
-      <AddProductForm />
+      <AddProductForm onAddProduct={addOptimisticProduct} />
 
       <Card>
         <CardHeader>

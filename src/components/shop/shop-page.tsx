@@ -16,7 +16,7 @@ import VideoPlayerModal from "./video-player-modal";
 import WelcomeLoader from "./welcome-loader";
 
 export default function ShopPage() {
-  const { products, loading: productsLoading, loadMore, loadingMore, hasMore } = useProducts();
+  const { products, loading: productsLoading, loadMore, loadingMore, hasMore, addOptimisticProduct } = useProducts();
   const { settings, loading: settingsLoading } = useSettings();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -121,6 +121,7 @@ export default function ShopPage() {
         products={products}
         settings={settings}
         loading={productsLoading || settingsLoading}
+        addOptimisticProduct={addOptimisticProduct}
       />
 
       {settings?.promoVideoUrl && (

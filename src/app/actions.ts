@@ -1,3 +1,4 @@
+
 "use server";
 
 import { revalidatePath } from "next/cache";
@@ -12,9 +13,9 @@ export async function addProductAction(productData: Omit<Product, "id" | "create
       imageUrls: productData.imageUrls.filter(url => url.trim() !== ""),
       createdAt: serverTimestamp(),
     };
-    await addDoc(collection(db, "products"), productToAdd);
+    const docRef = await addDoc(collection(db, "products"), productToAdd);
     revalidatePath("/");
-    return { success: true, message: "Product added successfully." };
+    return { success: true, message: "Product added successfully.", id: docRef.id };
   } catch (error) {
     console.error("Error adding product: ", error);
     return { success: false, message: "Failed to add product." };
