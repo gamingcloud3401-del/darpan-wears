@@ -1,12 +1,12 @@
 "use client";
 
 import { useTransition } from "react";
-import type { Product, SocialLinks } from "@/lib/types";
+import type { Product, Settings } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { removeProductAction } from "@/app/actions";
 import AddProductForm from "./add-product-form";
-import SocialLinksForm from "./social-links-form";
+import SettingsForm from "./settings-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
@@ -26,12 +26,12 @@ import {
 
 interface AdminViewProps {
   products: Product[];
-  socialLinks?: SocialLinks;
+  settings?: Settings;
   loading: boolean;
   onLogout: () => void;
 }
 
-export default function AdminView({ products, socialLinks, loading, onLogout }: AdminViewProps) {
+export default function AdminView({ products, settings, loading, onLogout }: AdminViewProps) {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
 
@@ -55,7 +55,7 @@ export default function AdminView({ products, socialLinks, loading, onLogout }: 
         </Button>
       </div>
       
-      <SocialLinksForm socialLinks={socialLinks} />
+      <SettingsForm settings={settings} />
       <AddProductForm />
 
       <Card>

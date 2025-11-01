@@ -5,13 +5,15 @@ export type Product = {
   price: number;
   offerPrice?: number;
   imageUrls: string[];
+  videoUrl?: string;
   category: string;
   sizes: string[];
 };
 
-export type SocialLinks = {
+export type Settings = {
   id: string;
   instagram: string;
   youtube: string;
   whatsapp: string;
+  promoVideoUrl?: string;
 };

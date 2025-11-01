@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import type { SocialLinks } from "@/lib/types";
+import type { Settings } from "@/lib/types";
 
-export function useSocialLinks() {
-  const [socialLinks, setSocialLinks] = useState<SocialLinks | undefined>(undefined);
+export function useSettings() {
+  const [settings, setSettings] = useState<Settings | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,14 +15,14 @@ export function useSocialLinks() {
       (querySnapshot) => {
         if (!querySnapshot.empty) {
           const doc = querySnapshot.docs[0];
-          setSocialLinks({ id: doc.id, ...doc.data() } as SocialLinks);
+          setSettings({ id: doc.id, ...doc.data() } as Settings);
         } else {
-          setSocialLinks(undefined);
+          setSettings(undefined);
         }
         setLoading(false);
       },
       (error) => {
-        console.error("Error fetching social links:", error);
+        console.error("Error fetching settings:", error);
         setLoading(false);
       }
     );
@@ -30,5 +30,5 @@ export function useSocialLinks() {
     return () => unsubscribe();
   }, []);
 
-  return { socialLinks, loading };
+  return { settings, loading };
 }

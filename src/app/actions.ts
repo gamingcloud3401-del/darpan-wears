@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { addDoc, collection, deleteDoc, doc, setDoc, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { Product, SocialLinks } from "@/lib/types";
+import { Product, Settings } from "@/lib/types";
 
 export async function addProductAction(productData: Omit<Product, "id">) {
   try {
@@ -31,7 +31,7 @@ export async function removeProductAction(productId: string) {
   }
 }
 
-export async function updateSocialLinksAction(links: Omit<SocialLinks, "id">) {
+export async function updateSettingsAction(settings: Partial<Omit<Settings, "id">>) {
   try {
     const settingsCollection = collection(db, "settings");
     const querySnapshot = await getDocs(settingsCollection);
@@ -44,11 +44,11 @@ export async function updateSocialLinksAction(links: Omit<SocialLinks, "id">) {
       docId = querySnapshot.docs[0].id;
     }
 
-    await setDoc(doc(db, "settings", docId), links, { merge: true });
+    await setDoc(doc(db, "settings", docId), settings, { merge: true });
     revalidatePath("/");
-    return { success: true, message: "Social links updated successfully." };
+    return { success: true, message: "Settings updated successfully." };
   } catch (error) {
-    console.error("Error updating social links:", error);
-    return { success: false, message: "Failed to update social links." };
+    console.error("Error updating settings:", error);
+    return { success: false, message: "Failed to update settings." };
   }
 }

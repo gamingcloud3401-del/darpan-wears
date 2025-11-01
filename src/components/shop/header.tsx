@@ -3,7 +3,7 @@
 import { ShoppingCart, Search, UserCog, Instagram, Youtube } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { SocialLinks } from '@/lib/types';
+import { Settings } from '@/lib/types';
 import Link from 'next/link';
 
 // Inline SVG for WhatsApp as it's not in lucide-react
@@ -29,10 +29,10 @@ interface HeaderProps {
   searchTerm: string;
   onSearchTermChange: (term: string) => void;
   onAdminClick: () => void;
-  socialLinks?: SocialLinks;
+  settings?: Settings;
 }
 
-export default function Header({ searchTerm, onSearchTermChange, onAdminClick, socialLinks }: HeaderProps) {
+export default function Header({ searchTerm, onSearchTermChange, onAdminClick, settings }: HeaderProps) {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-card shadow-sm">
       <div className="container mx-auto flex h-16 items-center space-x-4 px-4 sm:px-6 lg:px-8">
@@ -55,23 +55,23 @@ export default function Header({ searchTerm, onSearchTermChange, onAdminClick, s
         </div>
 
         <div className="flex items-center space-x-1">
-           {socialLinks?.instagram && (
+           {settings?.instagram && (
             <Button variant="ghost" size="icon" asChild>
-              <Link href={socialLinks.instagram} target="_blank" rel="noopener noreferrer">
+              <Link href={settings.instagram} target="_blank" rel="noopener noreferrer">
                 <Instagram className="h-5 w-5" />
               </Link>
             </Button>
           )}
-          {socialLinks?.youtube && (
+          {settings?.youtube && (
             <Button variant="ghost" size="icon" asChild>
-              <Link href={socialLinks.youtube} target="_blank" rel="noopener noreferrer">
+              <Link href={settings.youtube} target="_blank" rel="noopener noreferrer">
                 <Youtube className="h-5 w-5" />
               </Link>
             </Button>
           )}
-          {socialLinks?.whatsapp && (
+          {settings?.whatsapp && (
              <Button variant="ghost" size="icon" asChild>
-              <Link href={socialLinks.whatsapp} target="_blank" rel="noopener noreferrer">
+              <Link href={settings.whatsapp} target="_blank" rel="noopener noreferrer">
                 <WhatsAppIcon className="h-5 w-5" />
               </Link>
             </Button>

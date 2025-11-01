@@ -4,17 +4,17 @@ import { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import AdminLogin from "./admin-login";
 import AdminView from "./admin-view";
-import type { Product, SocialLinks } from "@/lib/types";
+import type { Product, Settings } from "@/lib/types";
 
 interface AdminPanelProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   products: Product[];
-  socialLinks?: SocialLinks;
+  settings?: Settings;
   loading: boolean;
 }
 
-export default function AdminPanel({ isOpen, onOpenChange, products, socialLinks, loading }: AdminPanelProps) {
+export default function AdminPanel({ isOpen, onOpenChange, products, settings, loading }: AdminPanelProps) {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -44,12 +44,12 @@ export default function AdminPanel({ isOpen, onOpenChange, products, socialLinks
         <SheetHeader>
           <SheetTitle className="text-2xl">Admin Panel</SheetTitle>
           <SheetDescription>
-            {isAdminLoggedIn ? "Manage your products and social links." : "Please login to continue."}
+            {isAdminLoggedIn ? "Manage your products and site settings." : "Please login to continue."}
           </SheetDescription>
         </SheetHeader>
         <div className="py-6">
           {isAdminLoggedIn ? (
-            <AdminView products={products} socialLinks={socialLinks} loading={loading} onLogout={handleLogout} />
+            <AdminView products={products} settings={settings} loading={loading} onLogout={handleLogout} />
           ) : (
             <AdminLogin onLoginSuccess={handleLoginSuccess} />
           )}

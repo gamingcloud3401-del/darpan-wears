@@ -20,6 +20,7 @@ const formSchema = z.object({
   price: z.coerce.number().positive("Price must be a positive number."),
   offerPrice: z.coerce.number().optional(),
   imageUrls: z.string().min(1, "At least one image URL is required.").transform(val => val.split(',').map(s => s.trim())),
+  videoUrl: z.string().url("Must be a valid URL.").or(z.literal('')),
   category: z.string().min(2, "Category must be at least 2 characters."),
   sizes: z.string().min(1, "At least one size is required.").transform(val => val.split(',').map(s => s.trim())),
 });
@@ -35,6 +36,7 @@ export default function AddProductForm() {
       price: 0,
       offerPrice: undefined,
       imageUrls: "https://picsum.photos/seed/new/600/400",
+      videoUrl: "",
       category: "",
       sizes: "",
     },
@@ -156,6 +158,19 @@ export default function AddProductForm() {
                   <FormDescription>
                     Add multiple image URLs, separated by commas. The first one will be the main image.
                   </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="videoUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Product Video URL (Optional)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="https://youtube.com/watch?v=..." {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
