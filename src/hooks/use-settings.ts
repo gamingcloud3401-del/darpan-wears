@@ -12,7 +12,7 @@ const defaultSettings: Settings = {
   youtube: "",
   whatsapp: "https://wa.me/9332307996",
   promoVideoUrl: "",
-  logoUrl: "",
+  logoUrl: "https://i.postimg.cc/bvypQBy5/IMG-20251031-224943-060.webp",
 };
 
 
