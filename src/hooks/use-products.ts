@@ -15,14 +15,14 @@ export function useProducts() {
   const [hasMore, setHasMore] = useState(true);
   const [lastDoc, setLastDoc] = useState<DocumentData | null>(null);
 
-  const addOptimisticProduct = (product: Omit<Product, "id" | "createdAt">) => {
+  const addOptimisticProduct = useCallback((product: Omit<Product, "id" | "createdAt">) => {
     const optimisticProduct: Product = {
       id: `optimistic-${Date.now()}`,
       ...product,
       createdAt: new Date(),
     };
     setProducts(prev => [optimisticProduct, ...prev]);
-  };
+  }, []);
 
   const fetchInitialProducts = useCallback(() => {
     setLoading(true);
