@@ -1,3 +1,4 @@
+
 "use client";
 
 import { ShoppingCart, Search, UserCog, Instagram, Youtube } from 'lucide-react';
@@ -36,7 +37,7 @@ interface HeaderProps {
 export default function Header({ searchTerm, onSearchTermChange, onAdminClick, settings }: HeaderProps) {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-card shadow-sm">
-      <div className="container mx-auto flex h-16 items-center space-x-2 sm:space-x-4 px-2 sm:px-6 lg:px-8">
+      <div className="container mx-auto flex h-16 items-center space-x-2 sm:space-x-4 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center space-x-2">
           {settings?.logoUrl ? (
             <Image src={settings.logoUrl} alt="Darpan Wears Logo" width={40} height={40} className="rounded-md" />
@@ -46,7 +47,7 @@ export default function Header({ searchTerm, onSearchTermChange, onAdminClick, s
           <h1 className="text-lg sm:text-xl font-bold text-primary tracking-tight">Darpan Wears</h1>
         </div>
         
-        <div className="flex-1 flex justify-center px-1 sm:px-4 lg:px-16">
+        <div className="flex-1 flex justify-center px-0 sm:px-4 lg:px-16">
           <div className="relative w-full max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
