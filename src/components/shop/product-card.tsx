@@ -33,22 +33,22 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
           />
         </div>
       </CardHeader>
-      <CardContent className="p-2 sm:p-4 flex-grow">
-        <CardTitle className="text-sm sm:text-lg font-semibold leading-tight mb-2">{product.name}</CardTitle>
-        <Badge variant="secondary" className="text-xs">{product.category}</Badge>
+      <CardContent className="p-2 flex-grow">
+        <CardTitle className="text-sm font-semibold leading-tight mb-1">{product.name}</CardTitle>
+        <Badge variant="secondary" className="text-[10px] px-1.5 py-0.5">{product.category}</Badge>
       </CardContent>
-      <CardFooter className="p-2 sm:p-4 pt-0">
+      <CardFooter className="p-2 pt-0">
         {product.offerPrice ? (
           <div className="flex items-baseline gap-2">
-            <p className="text-base sm:text-xl font-bold text-primary">
+            <p className="text-base font-bold text-primary">
               ₹{product.offerPrice.toFixed(2)}
             </p>
-            <p className="text-xs sm:text-sm font-medium text-muted-foreground line-through">
+            <p className="text-xs font-medium text-muted-foreground line-through">
               ₹{product.price.toFixed(2)}
             </p>
           </div>
         ) : (
-          <p className="text-base sm:text-xl font-bold text-primary">
+          <p className="text-base font-bold text-primary">
             ₹{product.price.toFixed(2)}
           </p>
         )}
