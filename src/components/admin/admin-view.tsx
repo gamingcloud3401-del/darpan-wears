@@ -1,11 +1,12 @@
 "use client";
 
 import { useTransition } from "react";
-import type { Product } from "@/lib/types";
+import type { Product, SocialLinks } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { removeProductAction } from "@/app/actions";
 import AddProductForm from "./add-product-form";
+import SocialLinksForm from "./social-links-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
@@ -25,11 +26,12 @@ import {
 
 interface AdminViewProps {
   products: Product[];
+  socialLinks?: SocialLinks;
   loading: boolean;
   onLogout: () => void;
 }
 
-export default function AdminView({ products, loading, onLogout }: AdminViewProps) {
+export default function AdminView({ products, socialLinks, loading, onLogout }: AdminViewProps) {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
 
@@ -47,12 +49,13 @@ export default function AdminView({ products, loading, onLogout }: AdminViewProp
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
-        <h3 className="text-xl font-semibold">Product Management</h3>
+        <h3 className="text-xl font-semibold">Admin Dashboard</h3>
         <Button variant="outline" onClick={onLogout}>
           <LogOut className="mr-2 h-4 w-4" /> Logout
         </Button>
       </div>
-
+      
+      <SocialLinksForm socialLinks={socialLinks} />
       <AddProductForm />
 
       <Card>

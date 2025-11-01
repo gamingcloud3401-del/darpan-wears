@@ -8,3 +8,10 @@ export type Product = {
   category: string;
   sizes: string[];
 };
+
+export type SocialLinks = {
+  id: string;
+  instagram: string;
+  youtube: string;
+  whatsapp: string;
+};

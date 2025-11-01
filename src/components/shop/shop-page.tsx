@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { useProducts } from "@/hooks/use-products";
+import { useSocialLinks } from "@/hooks/use-social-links";
 import { seedProducts } from "@/lib/initial-products";
 import type { Product } from "@/lib/types";
 
@@ -12,7 +13,8 @@ import OrderFormModal from "./order-form-modal";
 import AdminPanel from "../admin/admin-panel";
 
 export default function ShopPage() {
-  const { products, loading } = useProducts();
+  const { products, loading: productsLoading } = useProducts();
+  const { socialLinks, loading: socialLinksLoading } = useSocialLinks();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedSize, setSelectedSize] = useState<string>("");
@@ -57,11 +59,12 @@ export default function ShopPage() {
         searchTerm={searchTerm} 
         onSearchTermChange={setSearchTerm} 
         onAdminClick={() => setIsAdminPanelOpen(true)}
+        socialLinks={socialLinks}
       />
       <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <ProductList
           products={filteredProducts}
-          loading={loading}
+          loading={productsLoading}
           onProductClick={handleProductClick}
         />
       </main>
@@ -88,7 +91,8 @@ export default function ShopPage() {
         isOpen={isAdminPanelOpen}
         onOpenChange={setIsAdminPanelOpen}
         products={products}
-        loading={loading}
+        socialLinks={socialLinks}
+        loading={productsLoading || socialLinksLoading}
       />
     </div>
   );
