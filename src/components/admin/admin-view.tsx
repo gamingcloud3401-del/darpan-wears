@@ -1,17 +1,18 @@
 "use client";
 
-import { useTransition } from "react";
+import { useTransition, useState } from "react";
 import type { Product, Settings } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { removeProductAction } from "@/app/actions";
 import AddProductForm from "./add-product-form";
+import EditProductForm from "./edit-product-form";
 import SettingsForm from "./settings-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import { Skeleton } from "../ui/skeleton";
-import { LogOut, Trash2, Loader2 } from "lucide-react";
+import { LogOut, Trash2, Loader2, Pencil } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,6 +34,7 @@ interface AdminViewProps {
 
 export default function AdminView({ products, settings, loading, onLogout }: AdminViewProps) {
   const [isPending, startTransition] = useTransition();
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const { toast } = useToast();
 
   const handleRemoveProduct = (productId: string) => {
@@ -45,6 +47,15 @@ export default function AdminView({ products, settings, loading, onLogout }: Adm
       }
     });
   };
+  
+  const handleEditClick = (product: Product) => {
+    setEditingProduct(product);
+  };
+
+  const handleCloseEdit = () => {
+    setEditingProduct(null);
+  };
+
 
   return (
     <div className="space-y-8">
@@ -90,39 +101,56 @@ export default function AdminView({ products, settings, loading, onLogout }: Adm
                       <p className="text-sm text-muted-foreground">₹{product.price.toFixed(2)}</p>
                     )}
                   </div>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="destructive" size="icon" disabled={isPending}>
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone. This will permanently delete the product
-                           "{product.name}" from the database.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => handleRemoveProduct(product.id)}
-                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                          disabled={isPending}
-                        >
-                          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                          Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  <div className="flex items-center space-x-2">
+                    <Button variant="outline" size="icon" onClick={() => handleEditClick(product)}>
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="destructive" size="icon" disabled={isPending}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently delete the product
+                            "{product.name}" from the database.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleRemoveProduct(product.id)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            disabled={isPending}
+                          >
+                            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 </div>
               ))}
             </div>
           </ScrollArea>
         </CardContent>
       </Card>
+      
+      {editingProduct && (
+        <EditProductForm 
+            product={editingProduct}
+            isOpen={!!editingProduct}
+            onOpenChange={(isOpen) => {
+                if (!isOpen) {
+                    handleCloseEdit();
+                }
+            }}
+        />
+      )}
     </div>
   );
 }
