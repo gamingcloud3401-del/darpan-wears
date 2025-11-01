@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { Product } from "@/lib/types";
 import {
   Dialog,
@@ -29,6 +29,15 @@ export default function OrderFormModal({ product, size, isOpen, onOpenChange }: 
   const { toast } = useToast();
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const price = product.offerPrice || product.price;
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Preload the audio when the component mounts if it's not already loaded
+    if (typeof window !== "undefined" && !audioRef.current) {
+        audioRef.current = new Audio("https://cdn.pixabay.com/download/audio/2022/03/10/audio_c848a6323c.mp3");
+        audioRef.current.preload = "auto";
+    }
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,6 +52,10 @@ export default function OrderFormModal({ product, size, isOpen, onOpenChange }: 
     const whatsappUrl = `https://wa.me/9332307996?text=${encodeURIComponent(message)}`;
     
     window.open(whatsappUrl, '_blank');
+
+    if (audioRef.current) {
+        audioRef.current.play().catch(error => console.error("Audio play failed:", error));
+    }
 
     setIsSubmitted(true);
     toast({
