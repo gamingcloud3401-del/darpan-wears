@@ -38,7 +38,7 @@ export default function OrderFormModal({ product, size, isOpen, onOpenChange }: 
     const address = formData.get("address") as string;
     const payment = paymentMethod === "cod" ? "Cash on Delivery" : "Online Payment";
 
-    const message = `New Order Details:\n\nProduct: ${product.name}\nSize: ${size}\nPrice: ₹${price.toFixed(2)}\n\nCustomer Info:\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\nPayment Method: ${payment}`;
+    const message = `New Order Details:\n\nProduct ID: ${product.id}\nProduct: ${product.name}\nSize: ${size}\nPrice: ₹${price.toFixed(2)}\n\nCustomer Info:\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\nPayment Method: ${payment}`;
     
     const whatsappUrl = `https://wa.me/9332307996?text=${encodeURIComponent(message)}`;
     

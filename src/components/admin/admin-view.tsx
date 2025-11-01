@@ -92,6 +92,7 @@ export default function AdminView({ products, settings, loading, onLogout }: Adm
                   <Image src={product.imageUrls[0]} alt={product.name} width={64} height={64} className="rounded-md object-cover aspect-square" />
                   <div className="flex-1">
                     <p className="font-medium">{product.name}</p>
+                    <p className="text-xs text-muted-foreground">ID: {product.id}</p>
                      {product.offerPrice ? (
                       <p className="text-sm">
                         <span className="text-destructive font-semibold">₹{product.offerPrice.toFixed(2)}</span>
